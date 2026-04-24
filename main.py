@@ -26,6 +26,15 @@ class Bullet(Turtle):
         self.penup()
         self.goto(player.xcor(),player.ycor())
         self.setheading(player.heading())
+        self.forward(10)
+        self.player  = player
+        self.showturtle()
+
+    def move(self):
+        self.forward(10)
+
+    def kill_bullet(self):
+        self.clear
 
 class Player(Turtle):
     def __init__(self, x, y, color, screen, right_key, left_key, fire_key):
@@ -62,8 +71,10 @@ class Player(Turtle):
             self.setheading(180 - self.heading())
         if self.ycor() > 230 or self.ycor() < -230:
             self.setheading(-self.heading())
-    def die(self):
-        pass
+    def kill(self):
+        if self in self.player.bullets:
+            self.ht()
+            self.player.bullets.remove(self)
 
 screen = Screen()
 screen.bgcolor("black")
@@ -79,6 +90,12 @@ p2 = Player(100,0,"blue",screen, "Right","Left", "Up")
 
 while p1.alive and p2.alive:
     p1.move()
+    for bullet in p1.bullets:
+        bullet.move()
+        if p1.xcor() > 230 or p1.xcor() < -230:
+            kill_bullet()
+        if p1.ycor() > 230 or p1.ycor() < -230:
+            kill_bullet()
     p2.move()
 
 
